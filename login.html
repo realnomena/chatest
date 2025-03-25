@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ChatBridge</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="transitions.js" defer></script>
+    <style>
+        .profile-upload {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-label {
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .profile-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--pale-sage);
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto 10px;
+            border: 3px solid var(--dark-sage);
+        }
+
+        .profile-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(80, 75, 56, 0.8);
+            color: var(--cream);
+            padding: 4px;
+            font-size: 20px;
+        }
+
+        .upload-text {
+            color: var(--warm-taupe);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="left-section">
+            <div class="brand-content">
+                <h1>ChatBridge</h1>
+                <p class="tagline">Connect. Communicate. Bridge the gap.</p>
+            </div>
+            <div class="decorative-elements">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="login-container">
+                <h2>Welcome Back</h2>
+                <p class="login-subtitle">Please enter your details</p>
+                <form id="loginForm">
+                    <div class="input-group">
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit">Sign In</button>
+                </form>
+                <p class="register-prompt">
+                    Don't have an account? <button id="showRegister" class="link-button">Register here</button>
+                </p>
+            </div>
+
+            <!-- Add Registration Form -->
+            <div class="register-container" style="display: none;">
+                <h2>Create Account</h2>
+                <p class="login-subtitle">Join ChatBridge today</p>
+                <form id="registerForm">
+                    <div class="input-group">
+                        <input type="text" id="regName" placeholder="Full Name" required>
+                    </div>
+                    <div class="input-group profile-upload">
+                        <label for="profilePic" class="profile-label">
+                            <div class="profile-preview">
+                                <img id="profilePreview" src="default-avatar.png" alt="Profile Preview">
+                                <span class="upload-icon material-symbols-outlined">add_a_photo</span>
+                            </div>
+                            <span class="upload-text">Add Profile Picture (Optional)</span>
+                        </label>
+                        <input type="file" id="profilePic" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="regEmail" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="regPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                <p class="login-prompt">
+                    Already have an account? <button id="showLogin" class="link-button">Sign in</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginContainer = document.querySelector('.login-container');
+        const registerContainer = document.querySelector('.register-container');
+        const showRegisterBtn = document.getElementById('showRegister');
+        const showLoginBtn = document.getElementById('showLogin');
+
+        // Store registered users in localStorage
+        let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+        // Add this after existing variable declarations
+        const profilePic = document.getElementById('profilePic');
+        const profilePreview = document.getElementById('profilePreview');
+
+        // Add profile picture preview handler
+        profilePic.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePreview.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Toggle between login and register forms
+        showRegisterBtn.addEventListener('click', () => {
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+            registerContainer.classList.add('slide-in');
+        });
+
+        showLoginBtn.addEventListener('click', () => {
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+            loginContainer.classList.add('slide-in');
+        });
+
+        // Handle Registration
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            let profileImage = 'default-avatar.png';
+
+            // Handle profile picture
+            if (profilePic.files[0]) {
+                profileImage = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.readAsDataURL(profilePic.files[0]);
+                });
+            }
+
+            // Check if email already exists
+            if (users.some(user => user.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+
+            // Add new user with profile picture
+            users.push({ name, email, password, profileImage });
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Auto login after registration
+            localStorage.setItem('token', email);
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userProfile', profileImage);
+
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
+        });
+
+        // Update Login Handler
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Find user
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('token', email);
+                localStorage.setItem('userName', user.name);
+                localStorage.setItem('userProfile', user.profileImage);
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+            } else {
+                const inputs = document.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.classList.add('error');
+                    setTimeout(() => input.classList.remove('error'), 500);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

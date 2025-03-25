@@ -1,0 +1,337 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #D8BFD8, #E6E6FA);
+    overflow: hidden;
+    color: #2E2E2E;
+}
+
+/* Container styling with glass effect */
+.container {
+    text-align: center;
+    padding: 60px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 90%;
+    max-width: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Typography */
+h1, h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #2E2E2E, #4A4A4A);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Button container with enhanced spacing */
+.button-container {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Enhanced button styling */
+button {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #C8A2C8, #D8BFD8);
+    color: #2E2E2E;
+    font-size: 1.125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px rgba(0, 0, 0, 0.1),
+        0 6px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:active {
+    transform: translateY(-1px);
+}
+
+/* Input styling */
+input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+/* Link styling */
+a {
+    color: #C8A2C8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #D8BFD8;
+}
+
+/* Chat container styling */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 95%; /* Increased from 90% */
+    max-width: 800px; /* Increased from 600px */
+    height: 85vh; /* Increased from 80vh */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 25px; /* Increased from 20px */
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.chat-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Chat messages container */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px; /* Increased from 20px */
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0; /* Added margin for better spacing */
+}
+
+/* Message styling */
+.message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; /* Increased from 10px */
+    width: fit-content;
+    max-width: 80%; /* Increased from 75% */
+    position: relative;
+}
+
+.message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    white-space: pre-line;
+    font-size: 16px;
+    color: #4A235A;
+}
+
+/* Received messages (on the left) */
+.message.received {
+    align-self: flex-start;
+}
+
+.message.received .message-content {
+    background: #F4E1FF;
+    border-radius: 18px 18px 18px 0;
+}
+
+/* Sent messages (on the right) */
+.message.sent {
+    align-self: flex-end;
+}
+
+.message.sent .message-content {
+    background: #D8BFD8;
+    border-radius: 18px 18px 0 18px;
+    text-align: right;
+}
+
+/* Chat input styling */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 14px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    background: white;
+    color: #4A235A;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input button,
+.language-select {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 30px;
+    background: #D8BFD8;
+    color: #4A235A;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chat-input button:hover,
+.language-select:hover {
+    background: #C39BD3;
+}
+
+/* Language select styling */
+.language-select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    color: #2E2E2E;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.language-select:hover {
+    border-color: #C8A2C8;
+}
+
+.language-select:focus {
+    outline: none;
+    border-color: #C8A2C8;
+    box-shadow: 0 0 0 2px rgba(200, 162, 200, 0.2);
+}
+
+/* Bubbles Animation */
+.bubbles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Place behind the content */
+}
+
+/* Enhanced bubble animation */
+.bubbles li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.3)
+    );
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: animateBubbles 20s linear infinite;
+    bottom: -150px;
+    border-radius: 50%;
+    pointer-events: none; /* Make bubbles non-interactive */
+}
+
+.bubbles li:nth-child(1) { left: 20%; }
+.bubbles li:nth-child(2) { left: 12%; width: 30px; height: 30px; animation-delay: 2s; animation-duration: 17s; }
+.bubbles li:nth-child(3) { left: 70%; width: 25px; height: 25px; animation-delay: 4s; }
+.bubbles li:nth-child(4) { left: 40%; width: 40px; height: 40px; animation-delay: 0s; animation-duration: 13s; }
+.bubbles li:nth-child(5) { left: 65%; width: 20px; height: 20px; }
+.bubbles li:nth-child(6) { left: 75%; animation-delay: 3s; }
+.bubbles li:nth-child(7) { left: 35%; width: 50px; height: 50px; animation-delay: 7s; }
+.bubbles li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+.bubbles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+.bubbles li:nth-child(10) { left: 90%; width: 50px; height: 50px; animation-delay: 0s; animation-duration: 11s; }
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 40px 20px;
+        width: 95%;
+    }
+
+    button {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* Improved animation keyframes */
+@keyframes animateBubbles {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-500px) rotate(360deg) scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-1000px) rotate(720deg) scale(1);
+        opacity: 0;
+    }
+}
